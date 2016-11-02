@@ -4,5 +4,5 @@ import SeriesList from './components/SeriesList';
 
 render(
     <SeriesList />,
-    document.getElementById("app")
+    document.getElementById('app')
 );

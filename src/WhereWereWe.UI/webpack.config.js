@@ -5,7 +5,7 @@ export default {
     entry: './src/index.js',
     target: 'web',
     output: {
-        path: path.join(__dirname, "dist"),
+        path: path.join(__dirname, 'dist'),
         publicPath: '/',
         filename: './bundle.js'
     },
@@ -14,8 +14,7 @@ export default {
     },
     module: {
         loaders: [
-            { test: /\.js$/, loader: 'babel', include: path.join(__dirname, 'src')
-            }
+            { test: /\.js$/, loader: 'babel', include: path.join(__dirname, 'src') }
         ]
     }
 };

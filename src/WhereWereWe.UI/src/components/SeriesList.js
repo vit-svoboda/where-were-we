@@ -1,5 +1,7 @@
 ﻿import React from 'react';
 
-export default () => (
+const SeriesList = () => (
     <h1>Where Were We?</h1>
 );
+
+export default SeriesList;
