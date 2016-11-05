@@ -2,6 +2,7 @@
 
 export default {
     debug: true,
+    devtool: 'source-map',
     entry: './src/index.js',
     target: 'web',
     output: {
