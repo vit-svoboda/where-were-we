@@ -25,7 +25,10 @@ export default function seriesReducer(state: List<Series> = List(), action : any
     case types.LOAD_SERIES:
         return action.series;
 
-    case types.INCREMENT_EPISODE:
+    case types.ADD_SERIES:
+        return state.push(action.series);
+
+    case types.INCREMENT_PROGRESS:
         return state.update(
             state.indexOf(action.series),
             i => increment(i));

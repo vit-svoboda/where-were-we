@@ -2,7 +2,7 @@
 import {Record} from 'immutable';
 
 const Series = Record({
-    name: undefined,
+    name: '',
     season: 1,
     seasons: 1,
     episode: 1,
