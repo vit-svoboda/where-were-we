@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import Series from '../models/SeriesRecord';
 
-const SeriesForm = ({series, onSave, onChange}) => {
+const SeriesForm = ({series, onSave, onChange, onCancel}) => {
     return (
         <form>
             <label htmlFor="name">Name</label>
@@ -30,6 +30,10 @@ const SeriesForm = ({series, onSave, onChange}) => {
                 type="submit"
                 value="Save"
                 onClick={onSave} />
+            {onCancel && <input
+                type="button"
+                value="Cancel"
+                onClick={onCancel} />}
         </form>
     );
 };
@@ -37,7 +41,8 @@ const SeriesForm = ({series, onSave, onChange}) => {
 SeriesForm.propTypes = {
     series: PropTypes.instanceOf(Series).isRequired,
     onSave: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onCancel: PropTypes.func
 };
 
 export default SeriesForm;

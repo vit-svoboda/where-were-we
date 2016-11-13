@@ -18,6 +18,7 @@ export class HomePage extends React.Component {
         this.createNewSeries = this.createNewSeries.bind(this);
         this.updateNewSeries = this.updateNewSeries.bind(this);
         this.saveNewSeries = this.saveNewSeries.bind(this);
+        this.hideNewSeries = this.hideNewSeries.bind(this);
     }
 
     updateNewSeries(event) {
@@ -35,6 +36,10 @@ export class HomePage extends React.Component {
         event.preventDefault();
 
         this.props.actions.addSeries(this.state.newSeries);
+    }
+
+    hideNewSeries() {
+        this.setState({newSeries: null});
     }    
 
     render() {
@@ -46,7 +51,7 @@ export class HomePage extends React.Component {
             <div>
                 <h1>Where Were We?</h1>
                 {newSeries
-                    ? <SeriesForm series={newSeries} onSave={this.saveNewSeries} onChange={this.updateNewSeries} />
+                    ? <SeriesForm series={newSeries} onSave={this.saveNewSeries} onChange={this.updateNewSeries} onCancel={this.hideNewSeries} />
                     : <input type="button" value="+" onClick={this.createNewSeries} />}
                 <SeriesList series={series} incrementProgress={incrementProgress} />
             </div>
