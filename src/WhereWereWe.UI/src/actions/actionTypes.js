@@ -1,5 +1,8 @@
 // @flow
-export const LOAD_SERIES = 'LOAD_SERIES';
+export const LOAD_SERIES_ASYNC = 'LOAD_SERIES';
+export const LOAD_SERIES_SUCCESS = 'LOAD_SERIES_SUCCESS';
+export const LOAD_SERIES_ERROR = 'LOAD_SERIES_ERROR';
+
 export const ADD_SERIES = 'ADD_SERIES';
 
 export const INCREMENT_PROGRESS = 'INCREMENT_PROGRESS';

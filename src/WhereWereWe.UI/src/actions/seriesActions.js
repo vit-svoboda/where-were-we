@@ -1,15 +1,24 @@
 // @flow
 import * as types from './actionTypes';
-import { List } from 'immutable';
+import {List} from 'immutable';
+import fetch from 'isomorphic-fetch';
 import Series from '../models/SeriesRecord';
 
-export function loadSeries() {
-    // TODO: Retrieve the series data from some api that would handle the persistance.
+export function loadSeriesAsync() {
+    return function(dispatch: Function) {
+        dispatch({ type: types.LOAD_SERIES_ASYNC });
+        // TODO: Retrieve the URL from some sort of a configuration.
+        return fetch('http://localhost:50475/api/series')
+            .then(response => response.json())
+            .then(json => dispatch(loadSeriesSuccess(json)))
+            .catch(error => dispatch({ type: types.LOAD_SERIES_ERROR, error: error }));
+    };
+}
+
+export function loadSeriesSuccess(json: Array<Series>) {
     return {
-        type: types.LOAD_SERIES, series: List([
-            new Series({ name: 'Archer', season: 3, seasons: 7, episode: 5, episodes: 13 }),
-            new Series({ name: 'Game of Thrones', season: 6, seasons: 6, episodes: 10 })
-        ])
+        type: types.LOAD_SERIES_SUCCESS,
+        series: List(json.map(item => new Series(item)))
     };
 }
 
