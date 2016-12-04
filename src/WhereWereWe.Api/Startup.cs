@@ -57,12 +57,16 @@ namespace WhereWereWe.Api
                 options.UseSqlServer(Configuration.GetSection("ConnectionStrings")["WhereWereWeConnectionString"]));
 
             services.AddTransient<ISeriesRepository, SeriesRepository>();
+
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseCors(builder => builder.WithOrigins("*"));
 
             app.UseMvc();
         }
