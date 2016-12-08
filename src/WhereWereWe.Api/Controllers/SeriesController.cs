@@ -3,9 +3,11 @@ using WhereWereWe.Domain.Models;
 using WhereWereWe.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WhereWereWe.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class SeriesController : Controller
     {

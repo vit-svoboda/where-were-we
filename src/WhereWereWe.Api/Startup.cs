@@ -5,9 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Text;
 using WhereWereWe.Domain.Interfaces;
 using WhereWereWe.Repositories;
 
@@ -59,16 +63,52 @@ namespace WhereWereWe.Api
             services.AddTransient<ISeriesRepository, SeriesRepository>();
 
             services.AddCors();
+
+            services.AddOptions();
+
+            var authOptions = Configuration.GetSection("Authentication");
+
+            services.Configure<TokenIssuerOptions>(options =>
+            {
+                options.Issuer = "WhereWereWeApi";
+                options.Audience = authOptions["JwtAudience"];
+                options.ValidFor = new TimeSpan(1, 0, 0, 0);
+                options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authOptions["JwtKey"])), SecurityAlgorithms.HmacSha256);
+            });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<TokenIssuerOptions> jwtOptions)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             app.UseCors(builder => builder.WithOrigins("*"));
+            
+            app.UseJwtBearerAuthentication(GetBearerOptions(jwtOptions.Value));
 
             app.UseMvc();
+        }
+
+        private JwtBearerOptions GetBearerOptions(TokenIssuerOptions jwtOptions)
+        {
+            return new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = jwtOptions.SigningCredentials.Key,
+
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtOptions.Issuer,
+
+                    ValidateAudience = true,
+                    ValidAudience = jwtOptions.Audience,
+
+                    ValidateLifetime = true
+                }
+            };
         }
     }
 }
