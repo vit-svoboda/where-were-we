@@ -2,7 +2,7 @@
 
 namespace WhereWereWe.Repositories.Entities
 {
-    public class Series
+    internal class Series
     {
         public Guid Id { get; set; }
 

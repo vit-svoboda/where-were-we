@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using WhereWereWe.Domain.Models;
 
-namespace WhereWereWe.Repositories
+namespace WhereWereWe.Repositories.Configuration
 {
     public class SeriesMappingProfile : Profile
     {
