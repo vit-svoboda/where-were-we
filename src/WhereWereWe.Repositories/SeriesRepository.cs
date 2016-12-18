@@ -7,12 +7,12 @@ using WhereWereWe.Domain.Models;
 
 namespace WhereWereWe.Repositories
 {
-    public class SeriesRepository : ISeriesRepository
+    internal class SeriesRepository : ISeriesRepository
     {
         private SeriesContext dbContext;
         private IMapper mapper;
 
-        internal SeriesRepository(SeriesContext dbContext, IMapper mapper)
+        public SeriesRepository(SeriesContext dbContext, IMapper mapper)
         {
             this.mapper = mapper;
             this.dbContext = dbContext;

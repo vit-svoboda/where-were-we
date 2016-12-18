@@ -3,9 +3,10 @@ using System;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
-using WhereWereWe.Api.Models;
 using System.Threading.Tasks;
 using System.Security.Principal;
+using WhereWereWe.Api.Models;
+using WhereWereWe.Domain.Interfaces;
 
 namespace WhereWereWe.Api.Controllers
 {
@@ -13,14 +14,16 @@ namespace WhereWereWe.Api.Controllers
     public class TokenController : Controller
     {
         private readonly TokenIssuerOptions options;
+        private readonly IUserRepository userRepository;
 
-        public TokenController(IOptions<TokenIssuerOptions> options)
+        public TokenController(IOptions<TokenIssuerOptions> options, IUserRepository userRepository)
         {
             this.options = options.Value;
+            this.userRepository = userRepository;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]ApplicationUser user)
+        public async Task<IActionResult> Post([FromBody]LoginViewModel user)
         {
             var identity = await GetIdentity(user);
             if (identity == null)
@@ -56,16 +59,17 @@ namespace WhereWereWe.Api.Controllers
             return Ok(response);
         }
 
-        private Task<ClaimsIdentity> GetIdentity(ApplicationUser user)
+        private async Task<ClaimsIdentity> GetIdentity(LoginViewModel user)
         {
-            if (user.UserName == "test")
+            var existingUser = await userRepository.ValidateLogin(user.UserName, user.Password);
+            if (existingUser != null)
             {
-                return Task.FromResult(new ClaimsIdentity(
-                    new GenericIdentity(user.UserName, "Token"),
-                    new Claim[] { }));
+                return new ClaimsIdentity(
+                    new GenericIdentity(existingUser.Name, "Token"),
+                    new Claim[] { });
             }
 
-            return Task.FromResult<ClaimsIdentity>(null);
+            return null;
         }
     }
 }
