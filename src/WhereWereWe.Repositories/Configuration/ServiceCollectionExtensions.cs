@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WhereWereWe.Domain.Interfaces;
+using WhereWereWe.Repositories.Contexts;
 
 namespace WhereWereWe.Repositories.Configuration
 {
@@ -10,6 +11,7 @@ namespace WhereWereWe.Repositories.Configuration
         {
             services.AddDbContext<SeriesContext>(options => options.UseSqlServer(connectionString));
             services.AddDbContext<UserContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<SeriesProgressContext>(options => options.UseSqlServer(connectionString));
 
             return services;
         }
@@ -18,6 +20,7 @@ namespace WhereWereWe.Repositories.Configuration
         {
             services.AddTransient<ISeriesRepository, SeriesRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ISeriesProgressRepository, SeriesProgressRepository>();
 
             return services;
         }
