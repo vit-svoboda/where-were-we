@@ -11,7 +11,9 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Text;
+using WhereWereWe.Api.Configuration;
 using WhereWereWe.Repositories.Configuration;
+using WhereWereWe.Services.Configuration;
 
 namespace WhereWereWe.Api
 {
@@ -38,6 +40,7 @@ namespace WhereWereWe.Api
                 config.AddProfile<SeriesMappingProfile>();
                 config.AddProfile<UserMappingProfile>();
                 config.AddProfile<SeriesProgressMappingProfile>();
+                config.AddProfile<ViewModelsMappingProfile>();
             }).CreateMapper();
 
             // Do not allow application to start with broken configuration. Fail fast.
@@ -74,6 +77,8 @@ namespace WhereWereWe.Api
             
             services.AddRepositoryDbContexts(Configuration.GetConnectionString("WhereWereWeConnectionString"));
             services.AddRepositories();
+
+            services.AddWhereWereWeServices();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<TokenIssuerOptions> jwtOptions)

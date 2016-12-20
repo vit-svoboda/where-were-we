@@ -4,6 +4,8 @@ using WhereWereWe.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using WhereWereWe.Api.Models;
+using AutoMapper;
 
 namespace WhereWereWe.Api.Controllers
 {
@@ -11,18 +13,20 @@ namespace WhereWereWe.Api.Controllers
     [Route("api/[controller]")]
     public class SeriesController : Controller
     {
-        private ISeriesRepository _seriesRepository;
+        private readonly IMapper mapper;
+        private ISeriesRepository seriesRepository;
 
-        public SeriesController(ISeriesRepository seriesRepository)
+        public SeriesController(ISeriesRepository seriesRepository, IMapper mapper)
         {
-            _seriesRepository = seriesRepository;
+            this.seriesRepository = seriesRepository;
+            this.mapper = mapper;
         }
 
 
         [HttpGet]
         public async Task<IEnumerable<Series>> Get()
         {
-            return await _seriesRepository.GetSeries();
+            return await seriesRepository.GetSeries();
         }
 
         [HttpGet("{id}")]
@@ -32,14 +36,14 @@ namespace WhereWereWe.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Series series)
+        public async Task<IActionResult> Post(NewSeriesViewModel series)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            await _seriesRepository.AddSeries(series);
+            await seriesRepository.AddSeries(mapper.Map<Series>(series));
 
             return Ok();
         }

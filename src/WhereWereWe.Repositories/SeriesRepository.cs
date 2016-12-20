@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WhereWereWe.Domain.Interfaces;
 using WhereWereWe.Domain.Models;
 using WhereWereWe.Repositories.Contexts;
+using System;
 
 namespace WhereWereWe.Repositories
 {
@@ -33,6 +34,13 @@ namespace WhereWereWe.Repositories
             dbContext.Series.Add(seriesEntity);
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Series> GetSeries(Guid id)
+        {
+            var series = await dbContext.Series.FirstAsync(s => s.Id == id);
+
+            return mapper.Map<Series>(series);
         }
     }
 }
