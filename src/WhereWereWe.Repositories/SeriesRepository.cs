@@ -4,34 +4,43 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WhereWereWe.Domain.Interfaces;
 using WhereWereWe.Domain.Models;
+using WhereWereWe.Repositories.Contexts;
+using System;
 
 namespace WhereWereWe.Repositories
 {
-    public class SeriesRepository : ISeriesRepository
+    internal class SeriesRepository : ISeriesRepository
     {
-        private SeriesContext _dbContext;
-        private IMapper _mapper;
+        private SeriesContext dbContext;
+        private IMapper mapper;
 
         public SeriesRepository(SeriesContext dbContext, IMapper mapper)
         {
-            _mapper = mapper;
-            _dbContext = dbContext;
+            this.mapper = mapper;
+            this.dbContext = dbContext;
         }
 
         public async Task<IEnumerable<Series>> GetSeries()
         {
-            var series = await _dbContext.Series.ToListAsync();
+            var series = await dbContext.Series.ToListAsync();
 
-            return _mapper.Map<IEnumerable<Series>>(series);
+            return mapper.Map<IEnumerable<Series>>(series);
         }
 
         public async Task AddSeries(Series series)
         {
-            var seriesEntity = _mapper.Map<Entities.Series>(series);
+            var seriesEntity = mapper.Map<Entities.Series>(series);
 
-            _dbContext.Series.Add(seriesEntity);
+            dbContext.Series.Add(seriesEntity);
 
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Series> GetSeries(Guid id)
+        {
+            var series = await dbContext.Series.FirstAsync(s => s.Id == id);
+
+            return mapper.Map<Series>(series);
         }
     }
 }

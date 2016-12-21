@@ -1,11 +1,7 @@
-﻿using System;
-
-namespace WhereWereWe.Repositories.Entities
+﻿namespace WhereWereWe.Api.Models
 {
-    internal class Series
+    public class NewSeriesViewModel
     {
-        public Guid Id { get; set; }
-
         public string Name { get; set; }
 
         public int Seasons { get; set; }

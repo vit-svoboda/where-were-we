@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WhereWereWe.Repositories.Entities;
 
-namespace WhereWereWe.Repositories
+namespace WhereWereWe.Repositories.Contexts
 {
-    public class SeriesContext : DbContext
+    internal class SeriesContext : DbContext
     {
         public DbSet<Series> Series { get; set; }
 
