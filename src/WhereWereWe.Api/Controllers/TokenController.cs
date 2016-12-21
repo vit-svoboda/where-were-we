@@ -23,7 +23,7 @@ namespace WhereWereWe.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]LoginViewModel user)
+        public async Task<IActionResult> Post([FromForm]LoginViewModel user)
         {
             var identity = await GetIdentity(user);
             if (identity == null)

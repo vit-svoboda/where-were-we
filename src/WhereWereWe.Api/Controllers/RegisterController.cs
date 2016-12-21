@@ -15,7 +15,7 @@ namespace WhereWereWe.Api.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]RegisterViewModel user)
+        public async Task<IActionResult> Post([FromForm]RegisterViewModel user)
         {
             if (!ModelState.IsValid)
             {
