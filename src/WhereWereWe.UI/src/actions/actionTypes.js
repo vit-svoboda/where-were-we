@@ -1,4 +1,8 @@
 // @flow
+export const LOGIN_ASYNC = 'LOGIN_ASYNC';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+
 export const LOAD_SERIES_ASYNC = 'LOAD_SERIES';
 export const LOAD_SERIES_SUCCESS = 'LOAD_SERIES_SUCCESS';
 export const LOAD_SERIES_ERROR = 'LOAD_SERIES_ERROR';
