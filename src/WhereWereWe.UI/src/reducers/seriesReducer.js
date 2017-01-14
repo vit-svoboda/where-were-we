@@ -20,7 +20,7 @@ function increment(series: Series) {
     }
 }
 
-export default function seriesReducer(state: List<Series> = List(), action : any) {
+export default function seriesReducer(state: List<Series> = List(), action: any) {
     switch (action.type) {
     case types.LOAD_SERIES_SUCCESS:
         return action.series;

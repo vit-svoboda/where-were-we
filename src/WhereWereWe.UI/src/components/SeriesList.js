@@ -4,7 +4,7 @@ import { List } from 'immutable';
 import Series from '../models/SeriesRecord';
 import SeriesProgress from './SeriesProgress';
 
-const SeriesList = ({series, incrementProgress} : {series: List<Series>, incrementProgress: Function}) => {
+const SeriesList = ({series, incrementProgress}: {series: List<Series>, incrementProgress: Function}) => {
     return (
         <div>
             {series.map(series =>

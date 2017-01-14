@@ -8,10 +8,10 @@ class LoginForm extends React.Component {
     constructor (props: any, context: any) {
         super(props, context);
 
-        this.requestLogin = this.requestLogin.bind(this);
+        (this:any).requestLogin = this.requestLogin.bind(this);
     }
 
-    requestLogin(event) {
+    requestLogin (event) {
         event.preventDefault();
 
         var form = new FormData(event.target.form);

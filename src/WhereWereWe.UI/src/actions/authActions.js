@@ -16,6 +16,6 @@ export function loginAsync(form: FormData) {
     };
 }
 
-export function loginSuccess(json: { access_token: string, expires_in: number }) {
+export function loginSuccess(json: { access_token: string, expires_in: number }) {   
     return { type: types.LOGIN_SUCCESS, json };
 }

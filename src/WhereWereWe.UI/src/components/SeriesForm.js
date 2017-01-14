@@ -1,7 +1,8 @@
+// @flow
 import React, {PropTypes} from 'react';
 import Series from '../models/SeriesRecord';
 
-const SeriesForm = ({series, onSave, onChange, onCancel}) => {
+const SeriesForm = ({series, onSave, onChange, onCancel}: {series: Series, onSave: Function, onChange: Function, onCancel: Function}) => {
     return (
         <form>
             <label htmlFor="name">Name</label>
