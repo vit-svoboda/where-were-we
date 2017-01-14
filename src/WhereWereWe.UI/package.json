@@ -12,30 +12,26 @@
     "isomorphic-fetch": "~2.2.1"
   },
   "devDependencies": {
-    "webpack": "~1.13.3",
-    "webpack-dev-middleware": "~1.8.4",
+    "babel-cli": "~6.18.0",
     "babel-core": "6.18.0",
+    "babel-eslint": "~7.1.0",
+    "babel-loader": "~6.2.7",
+    "babel-plugin-transform-flow-strip-types": "~6.18.0",
     "babel-preset-es2015": "~6.18.0",
     "babel-preset-react": "~6.16.0",
-    "babel-loader": "~6.2.7",
-    "babel-cli": "~6.18.0",
-    "babel-eslint": "~7.1.0",
-    "babel-plugin-transform-flow-strip-types": "~6.18.0",
-    "eslint": "~3.9.1",
-    "eslint-plugin-react": "~6.5.0",
+    "eslint": "~3.13.1",
+    "eslint-config-defaults": "^9.0.0",
+    "eslint-plugin-react": "~6.9.0",
     "express": "~4.14.0",
-    "npm-run-all": "~3.1.1",
-    "path": "~0.12.7",
+    "flow-bin": "^0.37.4",
     "open": "~0.0.5",
-    "flow-bin": "^0.34.0",
-    "nodemon": "~1.11.0"
+    "path": "~0.12.7",
+    "webpack": "~1.14.0",
+    "webpack-dev-middleware": "~1.9.0"
   },
   "scripts": {
-    "start": "npm-run-all --parallel run:debug lint:watch flowcheck:watch",
-    "run:debug": "babel-node tools/server.dev.js",
+    "start": "babel-node tools/server.dev.js",
     "lint": "eslint --color **/*.js || exit 0",
-    "lint:watch": "nodemon -e js --watch . -x \"npm run lint\"",
-    "flowcheck": "flow check --color always || exit 0",
-    "flowcheck:watch": "nodemon -e js --watch src -x \"npm run flowcheck\""
+    "flowcheck": "flow check --color always || exit 0"
   }
 }
