@@ -91,7 +91,7 @@ namespace WhereWereWe.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.WithOrigins("*"));
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             //var facebookOptions = Configuration.GetSection("Authentication:Facebook");
             //app.UseFacebookAuthentication(new FacebookOptions
