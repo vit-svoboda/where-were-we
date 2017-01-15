@@ -1,31 +1,17 @@
 // @flow
 import * as types from './actionTypes';
 import {List} from 'immutable';
-import fetch from 'isomorphic-fetch';
 import Series from '../models/SeriesRecord';
+import {apiRequest} from '../apiClient'; 
 
 export function loadSeriesAsync() {
     return function(dispatch: Function) {
         dispatch({ type: types.LOAD_SERIES_ASYNC });
 
-        const token = localStorage.getItem('apiToken');
-
-        if (!token) {
-            return function () {
-                dispatch({type: types.LOGIN_TIMEOUT});
-            };
-        } else {
-            // TODO: Retrieve the URL from some sort of a configuration.
-            const request = new Request('http://localhost:50475/api/series', {
-                method: 'GET',
-                mode: 'cors',
-                headers: new Headers({'Authorization': 'Bearer ' + token })
-            });
-            return fetch(request)
-                .then(response => response.json())
-                .then(json => dispatch(loadSeriesSuccess(json)))
-                .catch(error => dispatch({ type: types.LOAD_SERIES_ERROR, error: error }));
-        }
+        apiRequest('GET', '/progress')
+            .then(response => response.json())
+            .then(json => dispatch(loadSeriesSuccess(json)))
+            .catch(error => dispatch({ type: types.LOAD_SERIES_ERROR, error }));
     };
 }
 
@@ -36,8 +22,38 @@ export function loadSeriesSuccess(json: Array<Series>) {
     };
 }
 
+function increment(series: Series): Series {
+    if (!series){
+        return;
+    }
+
+    if (series.episode < series.episodes) {
+        return series.set('episode', series.episode + 1);
+    } else if (series.season < series.seasons) {
+        return series.merge({
+            season: series.season + 1,
+            episode: 1
+        });
+    } else {
+        return series;
+    }
+}
+
 export function incrementProgress(series: Series) {
-    return { type: types.INCREMENT_PROGRESS, series };
+    return function(dispatch: Function) {
+
+        const incremented = increment(series);
+
+        // Optimistic error handling
+        dispatch({ type: types.INCREMENT_PROGRESS, series: incremented });
+
+        const data = new FormData();
+        data.append('episode', incremented.episode);
+        data.append('season', incremented.season);
+
+        apiRequest('PUT', '/progress/' + series.id, data)
+            .catch(error => dispatch({ type: types.SERVER_ERROR, error }));
+    };
 }
 
 export function addSeries(series: Series) {

@@ -3,22 +3,6 @@ import {List} from 'immutable';
 import * as types from './../actions/actionTypes';
 import Series from '../models/SeriesRecord';
 
-function increment(series: Series) {
-    if (!series){
-        return;
-    }
-
-    if (series.episode < series.episodes) {
-        return series.set('episode', series.episode + 1);
-    } else if (series.season < series.seasons) {
-        return series.merge({
-            season: series.season + 1,
-            episode: 1
-        });
-    } else {
-        return series;
-    }
-}
 
 export default function seriesReducer(state: List<Series> = List(), action: any) {
     switch (action.type) {
@@ -29,9 +13,10 @@ export default function seriesReducer(state: List<Series> = List(), action: any)
         return state.push(action.series);
 
     case types.INCREMENT_PROGRESS:
-        return state.update(
-            state.indexOf(action.series),
-            i => increment(i));
+        {
+            const index = state.findIndex(i => i.id === action.series.id);
+            return state.update(index, () => action.series);
+        }
 
     default:
         return state;
