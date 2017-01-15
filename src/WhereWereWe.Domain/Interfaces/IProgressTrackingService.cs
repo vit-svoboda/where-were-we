@@ -11,6 +11,6 @@ namespace WhereWereWe.Domain.Interfaces
 
         Task<SeriesProgress> StartProgress(User viewer, Guid seriesId);
 
-        Task UpdateProgress(User viewer, SeriesProgress progress);
+        Task<SeriesProgress> UpdateProgress(User viewer, SeriesProgress progress);
     }
 }

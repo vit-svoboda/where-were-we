@@ -40,7 +40,9 @@ namespace WhereWereWe.Repositories
 
         public async Task<IEnumerable<SeriesProgress>> GetSeriesProgress(User user)
         {
-            var progress = await dbContext.SeriesProgress.ToListAsync();
+            var progress = await dbContext.SeriesProgress
+                .Include(p => p.Series)
+                .ToListAsync();
 
             return mapper.Map<IEnumerable<SeriesProgress>>(progress);
         }
@@ -49,11 +51,12 @@ namespace WhereWereWe.Repositories
         {
             var progress = await dbContext.SeriesProgress
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(p => p.Id == seriesProgress.Id);
+                .Include(p => p.Series)
+                .FirstOrDefaultAsync(p => p.Series.Id == seriesProgress.Id && p.User.Id == user.Id);
 
-            if (progress.User.Name != user.Name)
+            if (progress == null)
             {
-                throw new UnauthorizedAccessException("The series progress does not belong to given user.");
+                return null;
             }
 
             progress.Episode = seriesProgress.Episode;

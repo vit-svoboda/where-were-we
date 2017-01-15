@@ -5,6 +5,7 @@ using WhereWereWe.Domain.Interfaces;
 using System;
 using WhereWereWe.Api.Models;
 using AutoMapper;
+using System.Linq;
 
 namespace WhereWereWe.Api.Controllers
 {
@@ -28,8 +29,7 @@ namespace WhereWereWe.Api.Controllers
             var user = await userService.GetUser(HttpContext.User);
             var progress = await progressService.GetAllProgress(user);
 
-            // TODO: View model!
-            return Ok(progress);
+            return Ok(progress.Select(p => new ProgressViewModel(p)));
         }
 
         [HttpPost]
@@ -44,7 +44,7 @@ namespace WhereWereWe.Api.Controllers
 
             var progress = await progressService.StartProgress(user, seriesId);
 
-            return Created($"api/{progress.Id}", progress);
+            return Created($"api/{progress.Series.Id}", new ProgressViewModel(progress));
         }
 
         [HttpPut, Route("{id:guid}")]
@@ -57,9 +57,13 @@ namespace WhereWereWe.Api.Controllers
 
             var user = await userService.GetUser(HttpContext.User);
 
-            await progressService.UpdateProgress(user, mapper.Map<SeriesProgress>(progressViewModel));
+            var updatedProgress = await progressService.UpdateProgress(user, mapper.Map<SeriesProgress>(progressViewModel));
+            if (updatedProgress == null)
+            {
+                return NotFound();
+            }
 
-            return Ok();
+            return Ok(new ProgressViewModel(updatedProgress));
         }
     }
 }

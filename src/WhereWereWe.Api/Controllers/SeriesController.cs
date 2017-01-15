@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WhereWereWe.Domain.Models;
 using WhereWereWe.Domain.Interfaces;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using WhereWereWe.Api.Models;
@@ -22,17 +21,11 @@ namespace WhereWereWe.Api.Controllers
             this.mapper = mapper;
         }
 
-
         [HttpGet]
-        public async Task<IEnumerable<Series>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await seriesRepository.GetSeries();
-        }
-
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            var series = await seriesRepository.GetSeries();
+            return Ok(series);
         }
 
         [HttpPost]

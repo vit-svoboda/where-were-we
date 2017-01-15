@@ -29,9 +29,9 @@ namespace WhereWereWe.Services
             return await progressRepository.AddSeriesProgress(viewer, series);
         }
 
-        public async Task UpdateProgress(User viewer, SeriesProgress progress)
+        public async Task<SeriesProgress> UpdateProgress(User viewer, SeriesProgress progress)
         {
-            await progressRepository.UpdateSeriesProgress(viewer, progress);
+            return await progressRepository.UpdateSeriesProgress(viewer, progress);
         }
     }
 }
