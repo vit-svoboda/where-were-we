@@ -44,7 +44,7 @@ namespace WhereWereWe.Api.Controllers
 
             var progress = await progressService.StartProgress(user, seriesId);
 
-            return Created($"api/{progress.Series.Id}", new ProgressViewModel(progress));
+            return Created($"api/progress/{progress.Series.Id}", new ProgressViewModel(progress));
         }
 
         [HttpPut, Route("{id:guid}")]

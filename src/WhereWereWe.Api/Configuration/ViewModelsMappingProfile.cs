@@ -10,6 +10,7 @@ namespace WhereWereWe.Api.Configuration
         {
             CreateMap<NewSeriesViewModel, Series>()
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
+                .ForMember(dst => dst.EpisodesPerSeason, opt => opt.MapFrom(src => src.Episodes))
                 .ReverseMap();
 
             CreateMap<ProgressUpdateViewModel, SeriesProgress>()

@@ -27,13 +27,19 @@ namespace WhereWereWe.Repositories
             return mapper.Map<IEnumerable<Series>>(series);
         }
 
-        public async Task AddSeries(Series series)
+        public async Task<Series> AddSeries(Series series)
         {
             var seriesEntity = mapper.Map<Entities.Series>(series);
 
-            dbContext.Series.Add(seriesEntity);
+            var existing = await dbContext.Series.FirstOrDefaultAsync(s => s.Name == series.Name);
+            if (existing == null)
+            {
+                dbContext.Series.Add(seriesEntity);
 
-            await dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
+            }
+
+            return mapper.Map<Series>(existing ?? seriesEntity);
         }
 
         public async Task<Series> GetSeries(Guid id)

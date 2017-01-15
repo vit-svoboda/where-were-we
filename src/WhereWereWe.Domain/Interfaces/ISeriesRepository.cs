@@ -11,6 +11,6 @@ namespace WhereWereWe.Domain.Interfaces
 
         Task<Series> GetSeries(Guid id);
 
-        Task AddSeries(Series series);
+        Task<Series> AddSeries(Series series);
     }
 }

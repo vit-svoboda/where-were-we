@@ -36,9 +36,9 @@ namespace WhereWereWe.Api.Controllers
                 return BadRequest();
             }
 
-            await seriesRepository.AddSeries(mapper.Map<Series>(series));
+            var createdSeries = await seriesRepository.AddSeries(mapper.Map<Series>(series));
 
-            return Ok();
+            return Created($"/api/series/{createdSeries.Id}", createdSeries);
         }
     }
 }
