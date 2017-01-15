@@ -10,9 +10,6 @@ import Series from '../models/SeriesRecord';
 import * as seriesActions from '../actions/seriesActions';
 
 class HomePage extends React.Component {
-    state: {
-        newSeries: Series
-    };
     constructor (props: any, context: any) {
         super(props, context);
 
@@ -25,6 +22,10 @@ class HomePage extends React.Component {
         (this:any).saveNewSeries = this.saveNewSeries.bind(this);
         (this:any).hideNewSeries = this.hideNewSeries.bind(this);
     }
+
+    state: {
+        newSeries: Series
+    };
 
     updateNewSeries (event: any) {
         const field = event.target.name;

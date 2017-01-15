@@ -11,30 +11,36 @@ const SeriesForm = ({series, onSave, onChange, onCancel}: {series: Series, onSav
                 name="name"
                 value={series.name}
                 placeholder="Fill in the series name."
-                onChange={onChange} />
+                onChange={onChange}
+            />
 
             <label htmlFor="seasons">Seasons</label>
             <input
                 type="number"
                 name="seasons"
                 value={series.seasons}
-                onChange={onChange} />
+                onChange={onChange}
+            />
 
             <label htmlFor="episodes">Episodes per season</label>
             <input
                 type="number"
                 name="episodes"
                 value={series.episodes}
-                onChange={onChange} />
+                onChange={onChange}
+            />
 
             <input
                 type="submit"
                 value="Save"
-                onClick={onSave} />
-            {onCancel && <input
+                onClick={onSave}
+            />
+            {onCancel && (
+            <input
                 type="button"
                 value="Cancel"
-                onClick={onCancel} />}
+                onClick={onCancel}
+            />)}
         </form>
     );
 };
