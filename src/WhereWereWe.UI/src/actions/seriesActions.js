@@ -57,5 +57,24 @@ export function incrementProgress(series: Series) {
 }
 
 export function addSeries(series: Series) {
-    return { type: types.ADD_SERIES, series };
+    return function (dispatch: Function) {
+        
+        const data = new FormData();
+        data.append('name', series.name);
+        data.append('episodes', series.episodes);
+        data.append('seasons', series.seasons);
+
+        apiRequest('POST', '/series', data)
+            .then(response => response.json())
+            .then(json => {
+                series = new Series(json);
+
+                const data = new FormData();
+                data.append('seriesId', series.id);
+
+                return apiRequest('POST', '/progress', data);
+            })
+            .then(() => dispatch({ type: types.ADD_SERIES, series }))
+            .catch(error => dispatch({ type: types.SERVER_ERROR, error }));
+    };
 }
