@@ -17,7 +17,7 @@ namespace WhereWereWe.Services
 
         public async Task<User> GetUser(ClaimsPrincipal principal)
         {
-            var userName = principal.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userName = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             return await userRepository.GetUser(userName);
         }
